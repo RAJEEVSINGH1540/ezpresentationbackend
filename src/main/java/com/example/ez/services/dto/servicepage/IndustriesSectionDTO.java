@@ -1,0 +1,23 @@
+package com.example.ez.services.dto.servicepage;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class IndustriesSectionDTO {
+    private Long id;
+    private String badge;
+    private String heading;
+    private String headingHighlight;
+    private String subheading;
+    private String industriesJson;
+    private String ctaCardTitle;
+    private String ctaCardDesc;
+    private String primaryColor;
+    private Boolean isActive;
+}
