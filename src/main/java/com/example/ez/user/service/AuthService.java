@@ -32,19 +32,19 @@ public class AuthService {
                         new UnauthorizedException("Invalid username or password"));
 
         if (!passwordEncoder.matches(request.getPassword(), admin.getPassword())) {
-            log.warn("⚠️ [AngelClap] Failed login for '{}'", request.getUsername());
+            log.warn("⚠️ [EZ] Failed login for '{}'", request.getUsername());
             throw new UnauthorizedException("Invalid username or password");
         }
 
         String token = jwtUtil.generateToken(admin.getUsername(), admin.getRole());
-        log.info("✅ [AngelClap] Admin '{}' logged in", admin.getUsername());
+        log.info("✅ [EZ] Admin '{}' logged in", admin.getUsername());
 
         return LoginResponse.builder()
                 .token(token)
                 .username(admin.getUsername())
                 .role(admin.getRole())
                 .expiresInMs(expirationMs)
-                .project("AngelClap")
+                .project("EZ")
                 .build();
     }
 }
