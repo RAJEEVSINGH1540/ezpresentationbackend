@@ -20,28 +20,46 @@ public class AuthService {
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final CaptchaService captchaService;
 
     @Value("${ez.jwt.expiration-ms}")
     private long expirationMs;
 
     public LoginResponse login(LoginRequest request) {
 
-        Admin admin = adminRepository
-                .findByUsername(request.getUsername())
-                .orElseThrow(() ->
-                        new UnauthorizedException("Invalid username or password"));
-
-        if (!passwordEncoder.matches(request.getPassword(), admin.getPassword())) {
-            log.warn("⚠️ [EZ] Failed login for '{}'", request.getUsername());
-            throw new UnauthorizedException("Invalid username or password");
+        // ── 1. Validate captcha ────────────────────────────────────────────
+        boolean captchaValid = captchaService.validateCaptcha(
+                request.getCaptchaToken(), request.getCaptcha());
+        if (!captchaValid) {
+            log.warn("⚠️ [EZ] Captcha validation failed for email: {}", request.getEmail());
+            throw new UnauthorizedException("Invalid or expired captcha. Please refresh and try again.");
         }
 
+        // ── 2. Find admin by username (username field stores email) ─────────
+        Admin admin = adminRepository
+                .findByUsername(request.getEmail())
+                .orElseThrow(() -> {
+                    log.warn("⚠️ [EZ] Admin not found with email: {}", request.getEmail());
+                    return new UnauthorizedException("Invalid email or password");
+                });
+
+        // ── 3. Verify password ─────────────────────────────────────────────
+        boolean passwordMatches = passwordEncoder.matches(request.getPassword(), admin.getPassword());
+        log.debug("🔍 [EZ] Password match for '{}': {}", request.getEmail(), passwordMatches);
+
+        if (!passwordMatches) {
+            log.warn("⚠️ [EZ] Password mismatch for admin: {}", request.getEmail());
+            throw new UnauthorizedException("Invalid email or password");
+        }
+
+        // ── 4. Generate JWT token ──────────────────────────────────────────
         String token = jwtUtil.generateToken(admin.getUsername(), admin.getRole());
-        log.info("✅ [EZ] Admin '{}' logged in", admin.getUsername());
+        log.info("✅ [EZ] Admin '{}' logged in successfully", admin.getUsername());
 
         return LoginResponse.builder()
                 .token(token)
                 .username(admin.getUsername())
+                .email(admin.getUsername()) // username is email
                 .role(admin.getRole())
                 .expiresInMs(expirationMs)
                 .project("EZ")

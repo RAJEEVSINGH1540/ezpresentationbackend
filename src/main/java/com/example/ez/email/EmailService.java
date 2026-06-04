@@ -256,4 +256,116 @@ public class EmailService {
             </html>
             """.formatted(name);
     }
+
+    // ═══════════════════════════════════════════════
+    //  PASSWORD RESET EMAIL
+    // ═══════════════════════════════════════════════
+
+    @Async
+    public void sendPasswordResetEmail(String toEmail, String resetLink) {
+        String htmlBody = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            </head>
+            <body style="margin:0;padding:0;background-color:#f4f6f9;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;">
+                <table width="100%%" cellpadding="0" cellspacing="0"
+                    style="background-color:#f4f6f9;padding:40px 20px;">
+                    <tr>
+                        <td align="center">
+                            <table width="600" cellpadding="0" cellspacing="0"
+                                style="background-color:#ffffff;border-radius:16px;overflow:hidden;
+                                       box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+
+                                <!-- Header -->
+                                <tr>
+                                    <td style="background:linear-gradient(135deg,#0d1f5c 0%%,#1a56e8 100%%);
+                                               padding:40px 40px 30px;text-align:center;">
+                                        <div style="width:56px;height:56px;background:rgba(255,255,255,0.15);
+                                                    border-radius:14px;display:inline-block;
+                                                    margin-bottom:16px;line-height:56px;">
+                                            <span style="font-size:28px;">🔐</span>
+                                        </div>
+                                        <h1 style="color:#ffffff;font-size:24px;font-weight:700;
+                                                   margin:0 0 8px;">Password Reset Request</h1>
+                                        <p style="color:rgba(255,255,255,0.7);font-size:13px;
+                                                  margin:0;letter-spacing:1px;">
+                                            EZ CONSTRUCTION ERP
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <!-- Body -->
+                                <tr>
+                                    <td style="padding:40px;">
+                                        <h2 style="color:#0d1f5c;font-size:22px;font-weight:700;
+                                                   margin:0 0 16px;">
+                                            Reset Your Password
+                                        </h2>
+                                        <p style="color:#6b7280;font-size:15px;line-height:1.6;margin:0 0 24px;">
+                                            You requested a password reset for your admin account.
+                                            Click the button below to create a new password.
+                                        </p>
+                                        <table cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
+                                            <tr>
+                                                <td style="background:linear-gradient(135deg,#1a56e8,#0d1f5c);
+                                                           border-radius:8px;padding:14px 32px;">
+                                                    <a href="%s"
+                                                       style="color:#ffffff;text-decoration:none;
+                                                              font-size:14px;font-weight:700;
+                                                              letter-spacing:0.5px;">
+                                                        RESET PASSWORD →
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <div style="background:#f0f6ff;border-left:4px solid #1a56e8;
+                                                    border-radius:0 8px 8px 0;
+                                                    padding:16px 20px;margin:0 0 24px;">
+                                            <p style="color:#1a56e8;font-size:14px;font-weight:600;
+                                                      margin:0 0 6px;">
+                                                ⏰ This link expires in 30 minutes
+                                            </p>
+                                            <p style="color:#6b7280;font-size:13px;line-height:1.5;margin:0;">
+                                                If you did not request this reset, please ignore this email.
+                                                Your account remains secure.
+                                            </p>
+                                        </div>
+                                        <p style="color:#9ca3af;font-size:12px;line-height:1.5;margin:0;">
+                                            If the button doesn't work, copy and paste this link:<br>
+                                            <span style="color:#1a56e8;word-break:break-all;">%s</span>
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <!-- Footer -->
+                                <tr>
+                                    <td style="background:#f8fafc;padding:24px 40px;
+                                               border-top:1px solid #e5e7eb;">
+                                        <p style="color:#9ca3af;font-size:12px;
+                                                  text-align:center;margin:0;">
+                                            © 2025 EZ Construction. All rights reserved.<br>
+                                            <a href="#" style="color:#1a56e8;text-decoration:none;">
+                                                Privacy Policy
+                                            </a>
+                                            &nbsp;•&nbsp;
+                                            <a href="#" style="color:#1a56e8;text-decoration:none;">
+                                                Terms of Service
+                                            </a>
+                                        </p>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </body>
+            </html>
+            """.formatted(resetLink, resetLink);
+
+        sendEmail(toEmail, "Password Reset Request", htmlBody);
+    }
 }

@@ -66,14 +66,11 @@ public class SecurityConfig {
                                 "/api/projects/getCaseStudy/**"
                         ).permitAll()
 
-
                         // ═══════════════════════════════════════════════════
                         // 5. CASE STUDIES — ADMIN (Only admin can publish/edit/delete)
                         // ═══════════════════════════════════════════════════
-                        // ✅ FIX: saveCase is POST for both create and update
                         .requestMatchers(HttpMethod.POST, "/api/projects/saveCase").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/projects/**").hasRole("ADMIN")
-                        // ✅ FIX: PUT for updates with id
                         .requestMatchers(HttpMethod.PUT, "/api/projects/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/projects/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/projects/**").hasRole("ADMIN")

@@ -127,7 +127,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     // =========================================================================
     private static final List<String> PUBLIC_POST_PATHS = List.of(
             "/api/chat/send",
-            "/api/book-demo/submit"
+            "/api/book-demo/submit",
+            "/api/auth/**"
     );
 
     // =========================================================================
@@ -171,6 +172,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         log.debug("🔍 [Filter] {} {}", method, path);
+
+        // ═══════════════════════════════════════════════════════════════════
+        // 0. AUTH ENDPOINTS — Always bypass, never check token
+        // ═══════════════════════════════════════════════════════════════════
+        if (path.startsWith("/api/auth")) {
+            log.debug("✅ [Auth Bypass] {} {}", method, path);
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // ── 1. OPTIONS preflight → always pass (CORS) ────────────────────────
         if (HttpMethod.OPTIONS.name().equals(method)) {

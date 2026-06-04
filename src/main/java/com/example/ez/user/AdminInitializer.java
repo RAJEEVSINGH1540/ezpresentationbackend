@@ -18,10 +18,11 @@ public class AdminInitializer implements CommandLineRunner {
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // ✅ Updated: usernames are now emails for login
     private static final List<AdminSeed> DEFAULT_ADMINS = List.of(
-            new AdminSeed("admin",      "Admin@123",      "ADMIN"),
-            new AdminSeed("manager",    "Manager@456",    "MANAGER"),
-            new AdminSeed("superadmin", "SuperAdmin@789", "SUPERADMIN")
+            new AdminSeed("ranarajeevsingh1540@gmail.com.com",      "Admin@123",      "ADMIN"),
+            new AdminSeed("manager@ez.com",    "Manager@456",    "MANAGER"),
+            new AdminSeed("superadmin@ez.com", "SuperAdmin@789", "SUPERADMIN")
     );
 
     @Override
@@ -34,9 +35,9 @@ public class AdminInitializer implements CommandLineRunner {
                         .role(seed.role())
                         .build();
                 adminRepository.save(admin);
-                log.info("✅ [AngelClap] Seeded admin: '{}'", seed.username());
+                log.info("✅ [EZ] Seeded admin: '{}'", seed.username());
             } else {
-                log.info("ℹ️ [AngelClap] Admin '{}' already exists", seed.username());
+                log.info("ℹ️ [EZ] Admin '{}' already exists", seed.username());
             }
         });
     }
