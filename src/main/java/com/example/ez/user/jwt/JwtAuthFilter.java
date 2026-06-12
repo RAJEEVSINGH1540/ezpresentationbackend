@@ -61,6 +61,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 "/api/client-logos",
                 "/api/client-logos/**",
 
+                // ── ERP WORK  ──────────────────────────────────────────
+                "/api/erp/public/**",
+
+
                 // ── HOMEPAGE SECTIONS ─────────────────────────────────────
                 "/api/homepage/hero",
                 "/api/homepage/hero/**",

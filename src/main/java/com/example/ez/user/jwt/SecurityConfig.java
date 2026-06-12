@@ -190,8 +190,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/about/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/about/**").hasRole("ADMIN")
 
+
                         // ═══════════════════════════════════════════════════
-                        // 13. EVERYTHING ELSE → any valid token
+                        // 13. ERP WORK — PUBLIC GET
+                        // ═══════════════════════════════════════════════════
+                        .requestMatchers(HttpMethod.GET, "/api/erp/public/**").permitAll()
+                        .requestMatchers("/api/erp/admin/**").hasRole("ADMIN")
+
+
+                        // ═══════════════════════════════════════════════════
+                        // 14. EVERYTHING ELSE → any valid token
                         // ═══════════════════════════════════════════════════
                         .anyRequest().authenticated()
                 )

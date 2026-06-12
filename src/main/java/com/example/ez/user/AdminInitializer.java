@@ -20,7 +20,7 @@ public class AdminInitializer implements CommandLineRunner {
 
     // ✅ Updated: usernames are now emails for login
     private static final List<AdminSeed> DEFAULT_ADMINS = List.of(
-            new AdminSeed("ranarajeevsingh1540@gmail.com.com",      "Admin@123",      "ADMIN"),
+            new AdminSeed("ranarajeevsingh1540@gmail.com",      "Admin@123",      "ADMIN"),
             new AdminSeed("manager@ez.com",    "Manager@456",    "MANAGER"),
             new AdminSeed("superadmin@ez.com", "SuperAdmin@789", "SUPERADMIN")
     );
